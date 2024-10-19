@@ -26,12 +26,6 @@ async function displayData(photographers) {
 		//const userCardDOM = photographerModel.getUserCardDOM();
 		photographersSection.appendChild(photographerModel);
 	});
-
-	photographers.forEach((photographer) => {
-		const photographerModel = photographerTemplate(photographer);
-		//const userCardDOM = photographerModel.getUserCardDOM();
-		photographersSection.appendChild(photographerModel);
-	});
 }
 
 async function init() {
