@@ -1,8 +1,139 @@
-/* Styles existants */
-#contact_modal {
+/* Base Modal Styles */
+.modal {
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	animation: fadeIn 0.3s ease-in-out;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+body.modal-open {
+	overflow: hidden;
+	padding-right: 15px; /* Compense la largeur de la scrollbar pour éviter le saut */
+}
+
+#contactModal {
 	display: none;
 }
 
+.modal-content {
+	background-color: #DB8876;
+	margin: 3% auto;
+	padding: 35px;
+	border-radius: 5px;
+	width: 50%;
+	max-width: 500px;
+	position: relative;
+	animation: slideDown 0.3s ease-out;
+}
+
+/* Modal Header */
+.modal header {
+	justify-content: space-between;
+	width: 100%;
+}
+
+.modal header img {
+	cursor: pointer;
+}
+
+.modal h2 {
+	font-size: 36px;
+	font-weight: normal;
+	color: black;
+	margin: 10px 0 20px 0;
+}
+
+.modal .close {
+	position: absolute;
+	right: 25px;
+	top: 25px;
+	color: white;
+	font-size: 32px;
+	font-weight: bold;
+	cursor: pointer;
+	background: none;
+	border: none;
+	padding: 0;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.2s ease;
+}
+
+.modal .close:hover,
+.modal .close:focus {
+	transform: scale(1.1);
+	outline: none;
+}
+
+/* Form Styles */
+form {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+	gap: 26px;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 5px;
+}
+
+.form-group label {
+	color: #312E2E;
+	font-size: 24px;
+	font-weight: normal;
+}
+
+.form-group label::after {
+	content: " *";
+	color: #901C1C;
+}
+
+.form-group input,
+.form-group textarea {
+	width: 94%;
+	padding: 15px;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+}
+
+.form-group textarea {
+	height: 120px;
+	resize: vertical;
+	min-height: 100px;
+	max-height: 200px;
+}
+
+/* Form Validation States */
+.form-group input:focus,
+.form-group textarea:focus {
+	outline: 3px solid #901C1C;
+}
+
+.form-group input.error,
+.form-group textarea.error {
+	border: 2px solid #D54215;
+}
+
+.form-group .error-message {
+	color: #D54215;
+	font-size: 14px;
+	margin-top: 5px;
+}
+
+/* Photographer Header */
 .photograph-header {
 	background-color: #FAFAFA;
 	height: 300px;
@@ -13,75 +144,43 @@
 	padding: 0 50px;
 }
 
-.contact_button {
+/* Buttons */
+.contact_button,
+.contact-button,
+.submit-button {
 	font-size: 20px;
 	font-weight: bold;
 	color: white;
-	padding: 11px;
-	width: 170px;
-	height: 70px;
 	border: none;
 	background-color: #901C1C;
 	border-radius: 5px;
 	cursor: pointer;
+	transition: background-color 0.3s;
 }
 
-/* Styles pour la modal (existants) */
-.modal {
-	border-radius: 5px;
-	background-color: #DB8876;
-	width: 50%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-between;
-	padding: 35px;
-	margin: auto;
+.contact_button,
+.contact-button {
+	padding: 11px;
+	width: 170px;
+	height: 70px;
 }
 
-.modal header {
-	justify-content: space-between;
-	width: 100%;
+.submit-button {
+	padding: 15px 25px;
+	font-size: 18px;
+	font-weight: 500;
+	width: 170px;
 }
 
-.modal header img {
-	cursor: pointer;
+.contact_button:hover,
+.contact-button:hover,
+.submit-button:hover,
+.submit-button:focus {
+	background-color: #BD2424;
+	outline: none;
 }
 
-.modal header h2 {
-	font-size: 64px;
-	font-weight: normal;
-	text-align: center;
-}
-
-form {
-	display: flex;
-	width: 100%;
-	flex-direction: column;
-	align-items: flex-start;
-}
-
-form label {
-	color: #312E2E;
-	font-size: 36px;
-}
-
-form div {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	align-items: self-start;
-	margin-bottom: 26px;
-}
-
-form input {
-	width: 100%;
-	height: 68px;
-	border: none;
-	border-radius: 5px;
-}
-
-/* Nouveaux styles pour la page photographe */
+/* Photographer Profile */
 .photographer-profile {
 	display: flex;
 	flex-direction: column;
@@ -113,6 +212,7 @@ form input {
 	border-radius: 50%;
 }
 
+/* Media Section */
 .media-section {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -147,6 +247,7 @@ form input {
 	margin: 0;
 }
 
+/* Like Button and Price Card */
 .like-button {
 	background: none;
 	border: none;
@@ -172,7 +273,7 @@ form input {
 	align-items: center;
 }
 
-/* Styles pour l'accessibilité */
+/* Accessibility Styles */
 .photographer-link {
 	text-decoration: none;
 	color: inherit;
@@ -186,7 +287,28 @@ form input {
 	outline-offset: 2px;
 }
 
-/* Media Queries pour la responsivité */
+/* Animations */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slideDown {
+	from {
+		transform: translateY(-100px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+/* Media Queries */
 @media (max-width: 1200px) {
 	.media-section {
 		grid-template-columns: repeat(2, 1fr);
@@ -205,12 +327,29 @@ form input {
 		font-size: 36px;
 	}
 
+	.modal-content {
+		margin: 0;
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		border-radius: 0;
+		padding: 20px;
+	}
+
+	.modal h2 {
+		font-size: 36px;
+	}
+
+	.form-group label {
+		font-size: 24px;
+	}
+
+	.submit-button {
+		width: 100%;
+	}
+
 	.media-section {
 		grid-template-columns: 1fr;
 		padding: 0 20px;
-	}
-
-	.modal {
-		width: 90%;
 	}
 }
