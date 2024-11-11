@@ -16,7 +16,6 @@ export async function getPhotographers() {
 	}
 }
 
-// get photographer by id
 export async function getPhotographerById(id) {
 	try {
 		const response = await fetch('../../data/photographers.json');

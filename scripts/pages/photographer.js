@@ -1,5 +1,7 @@
 import {getPhotographers, getPhotographerMedia} from '../utils/API.js';
 import {MediaFactory} from '../utils/MediaFactory.js';
+import {setupModalListeners} from '../utils/contactForm.js';
+import {Lightbox} from "../utils/lightbox.js";
 
 // Fonction principale d'initialisation
 async function displayPhotographer() {
@@ -96,6 +98,10 @@ async function displayMedia(medias, photographerName) {
 		});
 
 		mediaSection.innerHTML = mediaElements.join('');
+
+		// Initialiser la lightbox
+		const lightbox = new Lightbox();
+		lightbox.init(medias, photographerName);
 	} catch (error) {
 		console.error('Erreur lors de l\'affichage des médias:', error);
 		mediaSection.innerHTML = '<p>Une erreur est survenue lors du chargement des médias</p>';
@@ -113,99 +119,4 @@ function displayPriceCard(photographer) {
 	container.appendChild(priceCard);
 }
 
-function setupModalListeners() {
-	const modal = document.getElementById('contactModal');
-	const openButton = document.querySelector('.contact-button');
-	const closeButton = document.querySelector('.modal .close');
-	const form = document.getElementById('contactForm');
-
-	if (!modal || !openButton || !closeButton || !form) return;
-
-	openButton.addEventListener('click', () => {
-		openModal();
-		modal.setAttribute('aria-hidden', 'false');
-	});
-
-	closeButton.addEventListener('click', () => {
-		closeModal();
-		modal.setAttribute('aria-hidden', 'true');
-	});
-
-	// Fermer le modal en cliquant en dehors
-	window.addEventListener('click', (event) => {
-		if (event.target === modal) {
-			closeModal();
-			modal.setAttribute('aria-hidden', 'true');
-		}
-	});
-
-	// Gestion du formulaire
-	form.addEventListener('submit', handleSubmit);
-}
-
-function handleSubmit(event) {
-	event.preventDefault();
-	const formData = new FormData(event.target);
-
-	const modal = document.getElementById('contactModal');
-	if (modal) {
-		modal.style.display = 'none';
-		modal.setAttribute('aria-hidden', 'true');
-	}
-
-	event.target.reset();
-}
-
-function displayError(message) {
-	const main = document.querySelector('main');
-	if (!main) return;
-
-	const errorElement = document.createElement('div');
-	errorElement.className = 'error-message';
-	errorElement.setAttribute('role', 'alert');
-	errorElement.textContent = message;
-	main.prepend(errorElement);
-}
-
-function validateForm() {
-	const inputs = document.querySelectorAll('.form-group input, .form-group textarea');
-
-	inputs.forEach(input => {
-		input.addEventListener('invalid', function (event) {
-			event.preventDefault();
-			this.classList.add('error');
-
-			// Ajouter un message d'erreur si n'existe pas déjà
-			if (!this.nextElementSibling?.classList.contains('error-message')) {
-				const errorMessage = document.createElement('div');
-				errorMessage.className = 'error-message';
-				errorMessage.textContent = 'Ce champ est requis';
-				this.parentNode.appendChild(errorMessage);
-			}
-		});
-
-		input.addEventListener('input', function () {
-			this.classList.remove('error');
-			const errorMessage = this.parentNode.querySelector('.error-message');
-			if (errorMessage) {
-				errorMessage.remove();
-			}
-		});
-	});
-}
-
-function openModal() {
-	document.getElementById('contactModal').style.display = 'block';
-	document.body.classList.add('modal-open');
-}
-
-function closeModal() {
-	document.getElementById('contactModal').style.display = 'none';
-	document.body.classList.remove('modal-open');
-}
-
-// Appelez cette fonction après que le DOM soit chargé
-document.addEventListener('DOMContentLoaded', validateForm);
-
-// Initialiser la page
 document.addEventListener('DOMContentLoaded', displayPhotographer);
