@@ -390,13 +390,6 @@ form {
 	color: #000;
 }
 
-.media-section {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-	gap: 30px;
-	margin: 50px 100px;
-}
-
 .price-card {
 	position: fixed;
 	bottom: 0;
