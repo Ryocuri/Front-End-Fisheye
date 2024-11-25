@@ -217,7 +217,6 @@ form {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 30px;
-	padding: 0 100px;
 	margin-top: 50px;
 }
 
@@ -352,4 +351,70 @@ form {
 		grid-template-columns: 1fr;
 		padding: 0 20px;
 	}
+}
+
+.sorting-section {
+	margin: 20px 100px;
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.sorting-section label {
+	font-weight: bold;
+	color: #000;
+}
+
+.custom-select {
+	position: relative;
+}
+
+.custom-select select {
+	padding: 12px 24px;
+	font-size: 18px;
+	border: 1px solid #901C1C;
+	border-radius: 5px;
+	background-color: #901C1C;
+	color: white;
+	cursor: pointer;
+	min-width: 170px;
+}
+
+.custom-select select:focus {
+	outline: 3px solid #DB8876;
+	border-color: #DB8876;
+}
+
+.custom-select select option {
+	background-color: white;
+	color: #000;
+}
+
+.media-section {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+	gap: 30px;
+	margin: 50px 100px;
+}
+
+.price-card {
+	position: fixed;
+	bottom: 0;
+	right: 36px;
+	background-color: #DB8876;
+	padding: 20px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	font-weight: bold;
+}
+
+.error-message {
+	color: #901C1C;
+	text-align: center;
+	padding: 20px;
+	margin: 20px;
+	background-color: #FFE4E1;
+	border-radius: 5px;
 }

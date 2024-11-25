@@ -67,6 +67,8 @@ export class Lightbox {
 		this.currentIndex = index;
 		this.lightboxElement.setAttribute('aria-hidden', 'false');
 		document.body.style.overflow = 'hidden';
+		this.lightboxElement.focus();
+		//e.preventDefault();
 		this.updateMedia();
 	}
 
