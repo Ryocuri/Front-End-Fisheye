@@ -184,7 +184,7 @@ function handleLikeClick() {
 		currentMedias[mediaIndex].likes--;
 		likedMedias.delete(mediaId);
 		this.classList.remove('liked');
-		this.innerHTML = `${currentMedias[mediaIndex].likes} 🤍️`;
+		this.innerHTML = `${currentMedias[mediaIndex].likes} 🤍npm install --g eslint️`;
 	}
 
 
