@@ -179,13 +179,14 @@ function handleLikeClick() {
 		currentMedias[mediaIndex].likes++;
 		likedMedias.set(mediaId, true);
 		this.classList.add('liked');
+		this.innerHTML = `${currentMedias[mediaIndex].likes} ❤️`;
 	} else {
 		currentMedias[mediaIndex].likes--;
 		likedMedias.delete(mediaId);
 		this.classList.remove('liked');
+		this.innerHTML = `${currentMedias[mediaIndex].likes} 🤍️`;
 	}
 
-	this.innerHTML = `${currentMedias[mediaIndex].likes} ❤️`;
 
 	updateTotalLikes();
 }
