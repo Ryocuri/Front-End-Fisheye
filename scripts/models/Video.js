@@ -16,7 +16,7 @@ class Video extends Media {
                 <div class="media-info">
                     <h2>${this.title}</h2>
                     <button class="like-button" aria-label="likes">
-                        ${this.likes} ❤️
+                        ${this.likes} 🤍
                     </button>
                 </div>
             </article>`;
