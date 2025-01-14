@@ -1,21 +1,21 @@
 export class Lightbox {
-	constructor() {
-		this.currentIndex = 0;
-		this.medias = [];
-		this.lightboxElement = null;
-		this.photographerName = '';
-	}
+  constructor() {
+    this.currentIndex = 0;
+    this.medias = [];
+    this.lightboxElement = null;
+    this.photographerName = '';
+  }
 
-	init(medias, photographerName) {
-		this.medias = medias;
-		this.photographerName = photographerName;
-		this.setupLightbox();
-		this.attachEventListeners();
-	}
+  init(medias, photographerName) {
+    this.medias = medias;
+    this.photographerName = photographerName;
+    this.setupLightbox();
+    this.attachEventListeners();
+  }
 
-	setupLightbox() {
-		// Création de l'élément lightbox
-		const lightboxHTML = `
+  setupLightbox() {
+    // Création de l'élément lightbox
+    const lightboxHTML = `
       <div class="lightbox" role="dialog" aria-label="Vue image en plein écran" aria-hidden="true">
         <div class="lightbox-content">
           <button class="close-button" aria-label="Fermer la lightbox">×</button>
@@ -27,85 +27,89 @@ export class Lightbox {
       </div>
     `;
 
-		document.body.insertAdjacentHTML('beforeend', lightboxHTML);
-		this.lightboxElement = document.querySelector('.lightbox');
-	}
+    document.body.insertAdjacentHTML('beforeend', lightboxHTML);
+    this.lightboxElement = document.querySelector('.lightbox');
+  }
 
-	attachEventListeners() {
-		// Attacher les événements aux médias
-		document.querySelectorAll('.media-content').forEach((media, index) => {
-			media.addEventListener('click', () => this.openLightbox(index));
-			media.addEventListener('keydown', (e) => {
-				if (e.key === 'Enter') this.openLightbox(index);
-			});
-		});
+  attachEventListeners() {
+    // Attacher les événements aux médias
+    document.querySelectorAll('.media-content').forEach((media, index) => {
+      media.addEventListener('click', () => this.openLightbox(index));
+      media.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') this.openLightbox(index);
+      });
+    });
 
-		// Événements de navigation
-		this.lightboxElement.querySelector('.close-button').addEventListener('click', () => this.closeLightbox());
-		this.lightboxElement.querySelector('.prev').addEventListener('click', () => this.showPrevious());
-		this.lightboxElement.querySelector('.next').addEventListener('click', () => this.showNext());
+    // Événements de navigation
+	  // eslint-disable-next-line max-len
+    this.lightboxElement.querySelector('.close-button').addEventListener('click', () => this.closeLightbox());
+	  // eslint-disable-next-line max-len
+    this.lightboxElement.querySelector('.prev').addEventListener('click', () => this.showPrevious());
+    this.lightboxElement.querySelector('.next').addEventListener('click', () => this.showNext());
 
-		// Événements clavier
-		document.addEventListener('keydown', (e) => {
-			if (!this.lightboxElement.getAttribute('aria-hidden') === 'false') return;
+    // Événements clavier
+    document.addEventListener('keydown', (e) => {
+      if (!this.lightboxElement.getAttribute('aria-hidden') === 'false') return;
 
-			switch (e.key) {
-				case 'Escape':
-					this.closeLightbox();
-					break;
-				case 'ArrowLeft':
-					this.showPrevious();
-					break;
-				case 'ArrowRight':
-					this.showNext();
-					break;
-			}
-		});
-	}
+      switch (e.key) {
+      case 'Escape':
+        this.closeLightbox();
+        break;
+      case 'ArrowLeft':
+        this.showPrevious();
+        break;
+      case 'ArrowRight':
+        this.showNext();
+        break;
+      }
+    });
+  }
 
-	openLightbox(index) {
-		this.currentIndex = index;
-		this.lightboxElement.setAttribute('aria-hidden', 'false');
-		document.body.style.overflow = 'hidden';
-		this.lightboxElement.focus();
-		//e.preventDefault();
-		this.updateMedia();
-	}
+  openLightbox(index) { // Ouverture de la lightbox
+    this.currentIndex = index;
+    this.lightboxElement.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    this.lightboxElement.focus();
+    //e.preventDefault();
+    this.updateMedia();
+  }
 
-	closeLightbox() {
-		this.lightboxElement.setAttribute('aria-hidden', 'true');
-		document.body.style.overflow = '';
-	}
+  closeLightbox() { // Fermeture de la lightbox
+    this.lightboxElement.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
 
-	showPrevious() {
-		this.currentIndex = (this.currentIndex - 1 + this.medias.length) % this.medias.length;
-		this.updateMedia();
-	}
+  showPrevious() { // Affichage de l'image précédente
+    this.currentIndex = (this.currentIndex - 1 + this.medias.length) % this.medias.length;
+    this.updateMedia();
+  }
 
-	showNext() {
-		this.currentIndex = (this.currentIndex + 1) % this.medias.length;
-		this.updateMedia();
-	}
+  showNext() { // Affichage de l'image suivante
+    this.currentIndex = (this.currentIndex + 1) % this.medias.length;
+    this.updateMedia();
+  }
 
-	updateMedia() {
-		const mediaContainer = this.lightboxElement.querySelector('.media-container');
-		const titleContainer = this.lightboxElement.querySelector('.media-title');
-		const currentMedia = this.medias[this.currentIndex];
+  updateMedia() { // Mise à jour du contenu de la lightbox
+    const mediaContainer = this.lightboxElement.querySelector('.media-container');
+    const titleContainer = this.lightboxElement.querySelector('.media-title');
+    const currentMedia = this.medias[this.currentIndex];
 
-		// Mise à jour du contenu
-		if (currentMedia.image) {
-			const imagePath = `assets/images/${this.photographerName.split(' ')[0].toLowerCase()}/${currentMedia.image}`;
-			mediaContainer.innerHTML = `<img src="${imagePath}" alt="${currentMedia.title}">`;
-		} else if (currentMedia.video) {
-			const videoPath = `assets/images/${this.photographerName.split(' ')[0].toLowerCase()}/${currentMedia.video}`;
-			mediaContainer.innerHTML = `
+    // Mise à jour du contenu
+    if (currentMedia.image) {
+      // eslint-disable-next-line max-len
+      const imagePath = `assets/images/${this.photographerName.split(' ')[0].toLowerCase()}/${currentMedia.image}`;
+      mediaContainer.innerHTML = `<img src="${imagePath}" alt="${currentMedia.title}">`;
+    } else if (currentMedia.video) {
+      // eslint-disable-next-line max-len
+      const videoPath = `assets/images/${this.photographerName.split(' ')[0].toLowerCase()}/${currentMedia.video}`; 
+      mediaContainer.innerHTML = `
         <video controls>
           <source src="${videoPath}" type="video/mp4">
           Votre navigateur ne supporte pas la lecture de vidéos.
         </video>
       `;
-		}
+    }
 
-		titleContainer.textContent = currentMedia.title;
-	}
+    titleContainer.textContent = currentMedia.title;
+  }
 }

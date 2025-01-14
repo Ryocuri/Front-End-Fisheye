@@ -1,16 +1,16 @@
 export class Photographer {
-	constructor(data) {
-		this.name = data.name;
-		this.id = data.id;
-		this.city = data.city;
-		this.country = data.country;
-		this.tagline = data.tagline;
-		this.price = data.price;
-		this.portrait = data.portrait;
-	}
+  constructor(data) {
+    this.name = data.name;
+    this.id = data.id;
+    this.city = data.city;
+    this.country = data.country;
+    this.tagline = data.tagline;
+    this.price = data.price;
+    this.portrait = data.portrait;
+  }
 
-	getUserCardDOM() {
-		const template = `
+  getUserCardDOM() {
+    const template = `
       <article class="photographer">
         <a href="photographer.html?id=${this.id}" 
            aria-label="Voir le profil de ${this.name}"
@@ -26,6 +26,6 @@ export class Photographer {
           </figure>
         </a>
       </article>`;
-		return (new DOMParser().parseFromString(template, 'text/html')).body.firstChild;
-	}
+    return (new DOMParser().parseFromString(template, 'text/html')).body.firstChild;
+  }
 }

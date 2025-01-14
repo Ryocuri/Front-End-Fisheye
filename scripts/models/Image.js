@@ -1,13 +1,13 @@
-import {Media} from './Media.js';
+import { Media } from './Media.js';
 
 class Image extends Media {
-	constructor(data, photographerName) {
-		super(data, photographerName);
-		this.src = `assets/images/${photographerName.split(' ')[0].toLowerCase()}/${data.image}`;
-	}
+  constructor(data, photographerName) {
+    super(data, photographerName); // Appel du constructeur de la classe parente
+    this.src = `assets/images/${photographerName.split(' ')[0].toLowerCase()}/${data.image}`; // src de l'image
+  }
 
-	render() {
-		return `
+  render() {
+    return `
             <article class="media-card">
                 <img src="${this.src}" 
                      alt="${this.title}"
@@ -16,11 +16,11 @@ class Image extends Media {
                 <div class="media-info">
                     <h2>${this.title}</h2>
                     <button class="like-button" aria-label="likes">
-                        ${this.likes} 🤍
+                        ${this.likes} 🤍 
                     </button>
                 </div>
             </article>`;
-	}
+  }
 }
 
-export {Image};
+export { Image };

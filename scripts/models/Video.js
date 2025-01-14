@@ -1,13 +1,13 @@
-import {Media} from './Media.js';
+import { Media } from './Media.js';
 
 class Video extends Media {
-	constructor(data, photographerName) {
-		super(data, photographerName);
-		this.src = `assets/images/${photographerName.split(' ')[0].toLowerCase()}/${data.video}`;
-	}
+  constructor(data, photographerName) {
+    super(data, photographerName); // Appel du constructeur de la classe parente
+    this.src = `assets/images/${photographerName.split(' ')[0].toLowerCase()}/${data.video}`; // Chemin de la vidéo
+  }
 
-	render() {
-		return `
+  render() {
+    return `
             <article class="media-card">
                 <video controls class="media-content" tabindex="0">
                     <source src="${this.src}" type="video/mp4">
@@ -20,7 +20,7 @@ class Video extends Media {
                     </button>
                 </div>
             </article>`;
-	}
+  }
 }
 
-export {Video};
+export { Video };
