@@ -7,48 +7,6 @@ let currentMedias = []; // Variable globale pour stocker les médias actuels
 let currentPhotographerName = ''; // Variable globale pour le nom du photographe
 const likedMedias = new Map(); // Map pour stocker les médias likés
 
-// Fonction principale d'initialisation
-async function displayPhotographer() {
-  // Récupérer l'ID depuis l'URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const photographerId = urlParams.get('id');
-
-  if (!photographerId) {
-    console.error('ID du photographe manquant dans l\'URL');
-    return;
-  }
-
-  try {
-    // Récupérer les données du photographe
-    const photographers = await getPhotographers();
-    const photographer = photographers.find((p) => p.id === parseInt(photographerId));
-
-    if (!photographer) {
-      throw new Error('Photographe non trouvé'); 
-    }
-
-    // Afficher les informations du photographe
-    displayPhotographerInfo(photographer);
-
-    // Charger et afficher les médias
-    const medias = await getPhotographerMedia(photographerId);
-    await displayMedia(medias, photographer.name);
-
-    // Afficher l'encart avec le tarif journalier
-    displayPriceCard(photographer);
-
-    // Initialiser le système de tri
-    setupSortingListeners();
-
-    // Ajouter les écouteurs d'événements pour le modal
-    setupModalListeners();
-
-  } catch (error) {
-    console.error('Erreur:', error);
-    displayError('Une erreur est survenue lors du chargement de la page');
-  }
-}
-
 function displayPhotographerInfo(photographer) {
   const header = document.querySelector('.photograph-header'); // Sélectionner l'élément header
   if (!header) return; // Arrêter l'exécution si l'élément n'existe pas
@@ -121,46 +79,13 @@ function sortMedia(medias, criteria) {
   }
 }
 
-async function displayMedia(medias, photographerName, sortCriteria = 'popularity') {
-  const mediaSection = document.querySelector('.media-section'); // Sélectionner la section des médias
-  if (!mediaSection) return; // Arrêter l'exécution si l'élément n'existe pas
 
-  currentMedias = medias;
-  currentPhotographerName = photographerName;
-
-  try {
-    const sortedMedias = sortMedia([...medias], sortCriteria); // Tri des médias
-
-    const mediaElements = sortedMedias.map((mediaData) => {
-      const media = MediaFactory.createMedia(mediaData, photographerName);
-      return media.render();
-    });
-
-    mediaSection.innerHTML = mediaElements.join(''); // Afficher les médias
-
-    // Initialiser la lightbox
-    const lightbox = new Lightbox();
-    lightbox.init(sortedMedias, photographerName);
-
-    // Mettre à jour le compteur de likes
-    setupLikeListeners();
-    updateTotalLikes();
-  } catch (error) {
-    console.error('Erreur lors de l\'affichage des médias:', error);
-    mediaSection.innerHTML = '<p>Une erreur est survenue lors du chargement des médias</p>';
+function updateTotalLikes() {
+  const totalLikes = currentMedias.reduce((sum, media) => sum + media.likes, 0); // Calcul du total des likes
+  const likesCounter = document.querySelector('.total-likes'); // Sélectionner le compteur de likes
+  if (likesCounter) {
+    likesCounter.textContent = totalLikes.toLocaleString(); // Ajout de toLocaleString()
   }
-}
-
-function setupLikeListeners() {
-  document.querySelectorAll('.like-button').forEach((button) => {
-    button.addEventListener('click', handleLikeClick);
-    button.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        handleLikeClick.call(button, e); // Appel de la fonction handleLikeClick avec le bouton comme contexte
-      }
-    });
-  });
 }
 
 function handleLikeClick() {
@@ -190,11 +115,45 @@ function handleLikeClick() {
   updateTotalLikes(); // Mettre à jour le compteur de likes
 }
 
-function updateTotalLikes() {
-  const totalLikes = currentMedias.reduce((sum, media) => sum + media.likes, 0); // Calcul du total des likes
-  const likesCounter = document.querySelector('.total-likes'); // Sélectionner le compteur de likes
-  if (likesCounter) {
-    likesCounter.textContent = totalLikes.toLocaleString(); // Ajout de toLocaleString()
+function setupLikeListeners() {
+  document.querySelectorAll('.like-button').forEach((button) => {
+    button.addEventListener('click', handleLikeClick);
+    button.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleLikeClick.call(button, e); // Appel de la fonction handleLikeClick avec le bouton comme contexte
+      }
+    });
+  });
+}
+
+async function displayMedia(medias, photographerName, sortCriteria = 'popularity') {
+  const mediaSection = document.querySelector('.media-section'); // Sélectionner la section des médias
+  if (!mediaSection) return; // Arrêter l'exécution si l'élément n'existe pas
+
+  currentMedias = medias;
+  currentPhotographerName = photographerName;
+
+  try {
+    const sortedMedias = sortMedia([...medias], sortCriteria); // Tri des médias
+
+    const mediaElements = sortedMedias.map((mediaData) => {
+      const media = MediaFactory.createMedia(mediaData, photographerName);
+      return media.render();
+    });
+
+    mediaSection.innerHTML = mediaElements.join(''); // Afficher les médias
+
+    // Initialiser la lightbox
+    const lightbox = new Lightbox();
+    lightbox.init(sortedMedias, photographerName);
+
+    // Mettre à jour le compteur de likes
+    setupLikeListeners();
+    updateTotalLikes();
+  } catch (error) {
+	  // eslint-disable-next-line max-len
+    mediaSection.innerHTML = '<p>Une erreur est survenue lors du chargement des médias : ' + error.message + '</p>';
   }
 }
 
@@ -236,6 +195,46 @@ function displayError(message) {
     errorDiv.className = 'error-message';
     errorDiv.textContent = message;
     main.prepend(errorDiv);
+  }
+}
+
+// Fonction principale d'initialisation
+async function displayPhotographer() {
+  // Récupérer l'ID depuis l'URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const photographerId = urlParams.get('id');
+
+  if (!photographerId) {
+    return;
+  }
+
+  try {
+    // Récupérer les données du photographe
+    const photographers = await getPhotographers();
+    const photographer = photographers.find((p) => p.id === parseInt(photographerId));
+
+    if (!photographer) {
+      throw new Error('Photographe non trouvé'); // Lancer une erreur si le photographe n'est pas trouvé
+    }
+
+    // Afficher les informations du photographe
+    displayPhotographerInfo(photographer);
+
+    // Charger et afficher les médias
+    const medias = await getPhotographerMedia(photographerId);
+    await displayMedia(medias, photographer.name);
+
+    // Afficher l'encart avec le tarif journalier
+    displayPriceCard(photographer);
+
+    // Initialiser le système de tri
+    setupSortingListeners();
+
+    // Ajouter les écouteurs d'événements pour le modal
+    setupModalListeners();
+
+  } catch (error) {
+    displayError('Une erreur est survenue lors du chargement de la page : ' + error.message);
   }
 }
 

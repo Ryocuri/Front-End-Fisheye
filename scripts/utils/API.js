@@ -8,8 +8,8 @@ export async function getPhotographers() {
     }
     const data = await response.json();
     return data.photographers.map((photographer) => new Photographer(photographer));
+	  // eslint-disable-next-line no-unused-vars
   } catch (error) {
-    console.error('Erreur lors de la récupération des photographes:', error); 
     return {
       photographers: [],
     };
@@ -24,8 +24,8 @@ export async function getPhotographerById(id) {
     }
     const data = await response.json();
     return data.photographers.find((p) => p.id === parseInt(id));
+	  // eslint-disable-next-line no-unused-vars
   } catch (error) {
-    console.error('Erreur lors de la récupération du photographe:', error);
     return {};
   }
 }
@@ -35,8 +35,8 @@ export async function getPhotographerMedia(photographerId) {
     const response = await fetch('../../data/photographers.json');
     const data = await response.json();
     return data.media.filter((m) => m.photographerId === parseInt(photographerId));
+	  // eslint-disable-next-line no-unused-vars
   } catch (error) {
-    console.error('Erreur lors du chargement des médias:', error);
     return [];
   }
 }
